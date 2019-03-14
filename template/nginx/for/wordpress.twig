@@ -1,7 +1,7 @@
 server {
 
-	server_name {{$server_name or 'example.com'}} {{$other_names}};
-	root {{$root}}/{{$server_name or 'example.com'}}/{{$subfolder}};
+	server_name {{ server_name }} {{ other_names }};
+	root {{ root }}/{{ server_name }}/{{ subfolder }};
 	index index.php;
 
 	gzip on;
@@ -27,7 +27,7 @@ server {
 	}
 
 	location ~ \.php$ {
-		fastcgi_pass {{$fastcgi_pass}};
+		fastcgi_pass {{ fastcgi_pass }};
 		fastcgi_index index.php;
 		include fastcgi_params;
 	}
