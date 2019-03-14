@@ -1,5 +1,7 @@
 {
     "require": {
-        "mustache/mustache": "^2.12"
+        "mustache/mustache": "^2.12",
+        "eftec/bladeone": "^3.21",
+        "twig/twig": "^2.7"
     }
 }
