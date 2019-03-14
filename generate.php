@@ -36,21 +36,41 @@ foreach ($argv as $i=>$item)
 echo("# Made with turn http://github.com/miamibc/php-config-generator\n");
 echo("# ".implode(" ", $argv)."\n");
 
+
 // render template
-if  (stripos($argv[1], '.twig') !== false )
+$filename = $argv[1];
+if  (stripos($filename, '.twig') !== false )
 {
   $loader = new \Twig\Loader\FilesystemLoader(__DIR__.'/template');
   $twig = new \Twig\Environment($loader,[
     'cache' => __DIR__.'/cache',
   ]);
-  echo $twig->render( $argv[1], $vars );
+  // need to remove 'template/' from the beginning
+  $filename = substr( $filename, 9);
+  echo $twig->render( $filename , $vars );
 }
-if  ( ($pos = stripos($argv[1], '.blade')) !== false )
+elseif  ( ($pos = stripos($argv[1], '.blade')) !== false )
 {
   $blade = new eftec\bladeone\BladeOne(
     __DIR__ . '/template',
     __DIR__ . '/cache',
     eftec\bladeone\BladeOne::MODE_DEBUG
   );
-  echo $blade->run( substr($argv[1], 0, $pos), $vars );
+  $filename = substr($filename, 0, $pos);
+  $filename = substr($filename, 9);
+  echo $blade->run( $filename , $vars );
 }
+elseif  (stripos($argv[1], '.mustache') !== false )
+{
+  $mustache = new Mustache_Engine([
+    'cache'=>__DIR__ . '/cache',
+  ]);
+  $template = $mustache->loadTemplate( file_get_contents( $filename ) );
+  echo $template->render( $vars );
+}
+elseif  (stripos($argv[1], '.php') !== false )
+{
+  extract($vars);
+  include($filename);
+}
+
