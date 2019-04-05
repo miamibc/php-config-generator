@@ -33,8 +33,9 @@ foreach ($argv as $i=>$item)
 
 // var_dump($vars);
 
-echo("# Made with turn http://github.com/miamibc/php-config-generator\n");
+echo("# Made with http://github.com/miamibc/php-config-generator\n");
 echo("# ".implode(" ", $argv)."\n");
+echo("\n");
 
 
 // render template
@@ -68,9 +69,13 @@ elseif  (stripos($argv[1], '.mustache') !== false )
   $template = $mustache->loadTemplate( file_get_contents( $filename ) );
   echo $template->render( $vars );
 }
-elseif  (stripos($argv[1], '.php') !== false )
+elseif  (preg_match('|.php$|', $filename) && file_exists($filename) )
 {
   extract($vars);
-  include($filename);
+  @include($filename);
+}
+else {
+  echo "# Template not found or unsupported (can be twig, blade, mustache or php).";
+  exit(1);
 }
 

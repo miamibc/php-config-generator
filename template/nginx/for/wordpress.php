@@ -1,7 +1,7 @@
 server {
 
 	server_name <?=trim("$server_name $other_names")?>;
-	root <?="$root/$server_name/$subfolder"?>;
+	root <?=rtrim( "$root/$server_name/$subfolder", " /" )?>;
 	index index.php;
 
 	gzip on;
